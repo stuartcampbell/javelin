@@ -1,0 +1,87 @@
+compare javelin.UnitCell to diffpy.Structure.lattice
+
+look at diffpy.Structure.structure and ase.Atoms
+
+from diffpy.Structure.structure:
+addNewAtom
+angle
+append
+assignUniqueLabels
+composition
+copy
+distance
+element
+extend
+getLastAtom
+insert
+lattice
+read
+write
+x
+y
+z
+xyz
+xyz_cartn
+
+from ase.Atoms
+get_atomic_numbers
+set_atomic_numbers
+get_chemical_symbols
+set_chemical_symbols
+get_positions
+set_positions
+get_magnetic_moments
+get_scaled_positions
+set_scaled_positions
+get_tags
+set_tags
+get_cell
+set_cell
+get_number_of_atoms
+get_magnetic_moment
+get_pbc
+set_pbc
+get_volume
+
+*
+*=  repeat
+
+
+Structure, methods
+
+repeat(a,b,c) - take exsisting structure and expand by multiples of a,b,c in each direciton
+__mul__ __imul__  = repeat
+
+Structure
+i,j,k,site (Z, sym, xyz, xyz_cartn, magmoms, tags?)
+i,j,k rotation_matrix, translation_matrix
+
+xyz_cartn = convert_to_cartn(xyz*rotation+tranlation)
+
+
+
+actions:
+move (atom/cell)
+rotate (cell)
+swap (atom,cell)
+
+
+
+
+test scripts:
+   Compare discus/javelin with javelin.structure:
+      pzn_pb - neutron/xrays
+      pzn - neutron/xrays
+      cnt -neutrons/xrays
+   Compares import structure ase/diffpy/javelin:
+      cnt - create/load
+      pzn - load
+      hexagonal stucture - create X2
+   Magnetic calculations:
+      spinvert
+      diffuse_mag?
+
+
+write release notes:
+
+v0.1.0:

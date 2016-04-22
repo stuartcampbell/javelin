@@ -1,0 +1,44 @@
+read
+stru pzn_pb.stru
+
+four
+neutron
+ll -2.0,-2.0,0.0
+lr 2.0,-2.0,0.0
+ul -2.0,2.0,0.0
+na 201
+no 201
+set ave,0.0
+lots off
+run
+exit
+
+output
+form pgm
+threshold zmin,0
+threshold zmax,1e7
+outfile nil.pgm
+run
+exit
+
+four
+neutron
+ll -2.0,-1.0,-2.0
+lr -2.0,-1.0,2.0
+ul 1.0,2.0,-2.0
+na 201
+no 201
+set ave,0.0
+lots off
+run
+exit
+
+output
+form pgm
+threshold zmin,0
+threshold zmax,1e7
+outfile nil2.pgm
+run
+exit
+
+exit

@@ -1,0 +1,24 @@
+read
+stru cnt.stru
+
+four
+xray
+ll -20.0,-20.0,0.0
+lr 20.0,-20.0,0.0
+ul -20.0,20.0,0.0
+na 1001
+no 1001
+set ave,0.0
+lots off
+run
+exit
+
+output
+form pgm
+threshold zmin,0
+threshold zmax,10000
+outfile cnt_xray.pgm
+run
+exit
+
+exit
