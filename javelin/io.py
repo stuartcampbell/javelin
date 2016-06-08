@@ -85,6 +85,20 @@ def save_mantid_MDHisto(dataArray, filename):
     data.create_dataset('errors_squared', data=dataArray.values, compression="gzip")
     data.create_dataset('mask', data=np.zeros(dataArray.shape, dtype=np.int8), compression="gzip")
     data.create_dataset('num_events', data=np.ones(dataArray.shape), compression="gzip")
+
+    # Write lattice constants
+    experiment = top.create_group('experiment0')
+    experiment.attrs['NX_class'] = 'NXgroup'
+    sample = experiment.create_group('sample')
+    sample.attrs['NX_class'] = 'NXsample'
+    ol = sample.create_group('oriented_lattice')
+    ol.attrs['NX_class'] = 'NXcrystal'
+    ol.create_dataset('unit_cell_a', data=dataArray.attrs['a'])
+    ol.create_dataset('unit_cell_alpha', data=dataArray.attrs['alpha'])
+    ol.create_dataset('unit_cell_b', data=dataArray.attrs['b'])
+    ol.create_dataset('unit_cell_beta', data=dataArray.attrs['beta'])
+    ol.create_dataset('unit_cell_c', data=dataArray.attrs['c'])
+    ol.create_dataset('unit_cell_gamma', data=dataArray.attrs['gamma'])
     f.close()
 
 
