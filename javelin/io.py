@@ -89,16 +89,74 @@ def save_mantid_MDHisto(dataArray, filename):
     # Write lattice constants
     experiment = top.create_group('experiment0')
     experiment.attrs['NX_class'] = 'NXgroup'
+    experiment.attrs['version'] = 1
+    instrument = experiment.create_group('instrument')
+    instrument.attrs['NX_class'] = 'NXinstrument'
+    instrument.attrs['version'] = 1
+    instrument.create_dataset('name', data=[np.string_("JAVELIN")])
+    instrument_xml = instrument.create_group('instrument_xml')
+    instrument_xml.attrs['NX_class'] = 'NXnote'
+    xml = """<?xml version="1.0" encoding="UTF-8"?>
+<instrument name="JAVELIN" valid-from="1900-01-31 23:59:59">
+  <component type="flat-detector" idlist="detector-id-list">
+    <locations n-elements="5" x="1.0" x-end="5.0"
+      y="4.0" y-end="1.0"
+      z="3.0" z-end="3.0"/>
+  </component>
+
+  <type name="flat-detector" is="detector">
+    <cuboid id="shape">
+      <left-front-bottom-point x="-0.05" y="-0.1" z="0.0"  />
+      <left-front-top-point  x="-0.05" y="0.1" z="0.0"  />
+      <left-back-bottom-point  x="-0.05" y="-0.1" z="-0.025"  />
+      <right-front-bottom-point  x="0.05" y="-0.1" z="0.0"  />
+    </cuboid>
+  </type>
+
+  <component type="sample">
+    <location/>
+  </component>
+  <type name="sample" is="samplePos" />
+
+  <idlist idname="detector-id-list">
+    <id start="1" end="5" />
+  </idlist>
+</instrument>
+"""
+    instrument_xml.create_dataset('data', data=[np.string_(xml)])
+    logs = experiment.create_group('logs')
+    logs.attrs['NX_class'] = 'NXgroup'
+    logs.attrs['version'] = 1
     sample = experiment.create_group('sample')
     sample.attrs['NX_class'] = 'NXsample'
+    sample.attrs['name'] = np.string_(' ')
+    sample.attrs['shape_xml'] = np.string_(' ')
+    sample.attrs['version'] = 1
+    sample.create_dataset('num_oriented_lattice', data=[1], dtype=np.int32)
+    sample.create_dataset('num_other_samples', data=[0], dtype=np.int32)
+    # sample.create_dataset('geom_height', data=[0], dtype=np.float64)
+    # sample.create_dataset('geom_id', data=[0], dtype=np.int32)
+    # sample.create_dataset('geom_thickness', data=[0], dtype=np.float64)
+    # sample.create_dataset('geom_width', data=[0], dtype=np.float64)
+    material = sample.create_group('material')
+    material.attrs['NX_class'] = 'NXdata'
+    material.attrs['name'] = np.string_(' ')
+    material.attrs['version'] = 1
+    material.create_dataset('element_Z', data=[0], dtype=np.uint16)
+    material.create_dataset('element_A', data=[0], dtype=np.uint16)
+    material.create_dataset('number_density', data=[0], dtype=np.float64)
+    material.create_dataset('pressure', data=[0], dtype=np.float64)
+    material.create_dataset('temperature', data=[0], dtype=np.float64)
     ol = sample.create_group('oriented_lattice')
     ol.attrs['NX_class'] = 'NXcrystal'
-    ol.create_dataset('unit_cell_a', data=dataArray.attrs['a'])
-    ol.create_dataset('unit_cell_alpha', data=dataArray.attrs['alpha'])
-    ol.create_dataset('unit_cell_b', data=dataArray.attrs['b'])
-    ol.create_dataset('unit_cell_beta', data=dataArray.attrs['beta'])
-    ol.create_dataset('unit_cell_c', data=dataArray.attrs['c'])
-    ol.create_dataset('unit_cell_gamma', data=dataArray.attrs['gamma'])
+    ol.create_dataset('orientation_matrix', data=np.eye(3))
+    # ol.create_dataset('unit_cell_a', data=dataArray.attrs['a'])
+    # ol.create_dataset('unit_cell_alpha', data=dataArray.attrs['alpha'])
+    # ol.create_dataset('unit_cell_b', data=dataArray.attrs['b'])
+    # ol.create_dataset('unit_cell_beta', data=dataArray.attrs['beta'])
+    # ol.create_dataset('unit_cell_c', data=dataArray.attrs['c'])
+    # ol.create_dataset('unit_cell_gamma', data=dataArray.attrs['gamma'])
+    # TODO write W_MATRIX to logs
     f.close()
 
 
