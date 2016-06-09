@@ -58,6 +58,7 @@ def save_mantid_MDHisto(dataArray, filename):
     """Save a file that can be read in using Mantid's LoadMD"""
     import h5py
     import numpy as np
+    from javelin.unitcell import UnitCell
     f = h5py.File(filename, 'w')
     top = f.create_group('MDHistoWorkspace')
     top.attrs['NX_class'] = 'NXentry'
@@ -149,7 +150,13 @@ def save_mantid_MDHisto(dataArray, filename):
     material.create_dataset('temperature', data=[0], dtype=np.float64)
     ol = sample.create_group('oriented_lattice')
     ol.attrs['NX_class'] = 'NXcrystal'
-    ol.create_dataset('orientation_matrix', data=np.eye(3))
+    B = UnitCell(dataArray.attrs['a'],
+                 dataArray.attrs['b'],
+                 dataArray.attrs['c'],
+                 dataArray.attrs['alpha'],
+                 dataArray.attrs['beta'],
+                 dataArray.attrs['gamma']).B
+    ol.create_dataset('orientation_matrix', data=np.asarray(B))
     # ol.create_dataset('unit_cell_a', data=dataArray.attrs['a'])
     # ol.create_dataset('unit_cell_alpha', data=dataArray.attrs['alpha'])
     # ol.create_dataset('unit_cell_b', data=dataArray.attrs['b'])
